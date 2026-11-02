@@ -1,0 +1,15 @@
+[workspace]
+resolver = "2"
+members = ["crates/sekisho-core", "crates/sekisho"]
+
+[workspace.package]
+edition = "2024"
+license = "Apache-2.0"
+rust-version = "1.94.1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"

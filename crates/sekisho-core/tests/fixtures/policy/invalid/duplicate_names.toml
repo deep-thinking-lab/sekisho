@@ -1,0 +1,11 @@
+version = 1
+
+[[rule]]
+name = "same name"
+tool = "git.push"
+decision = "allow"
+
+[[rule]]
+name = "same name"
+tool = "git.fetch"
+decision = "deny"

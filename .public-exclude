@@ -1,0 +1,10 @@
+# Paths that exist only in the private development repository. They are removed when
+# scripts/release/export-public.sh builds a public snapshot, and scripts/check-public-tree.sh
+# fails if any of them appears in a public tree.
+docs/tasks
+docs/PLAN.md
+docs/GTM.md
+AGENTS.md
+CLAUDE.md
+scripts/dispatch.sh
+scripts/release/export-public.sh

@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "weekly budget"
+tool = "git.push"
+decision = "allow"
+budget = { max = 10, per = "1w" }

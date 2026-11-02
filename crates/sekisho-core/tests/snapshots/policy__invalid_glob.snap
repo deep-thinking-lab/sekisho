@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("unclosed class"), field `target`: invalid target glob "github.com/acme/[abc": error parsing glob 'github.com/acme/[abc': unclosed character class; missing ']'

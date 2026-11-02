@@ -1,0 +1,14 @@
+{
+  "session_id": "abc123",
+  "transcript_path": "/home/user/.claude/projects/-home-user-my-project/abc123.jsonl",
+  "cwd": "/home/user/my-project",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Read",
+  "tool_input": {
+    "file_path": "/home/user/my-project/Cargo.toml",
+    "offset": 1,
+    "limit": 20
+  },
+  "tool_use_id": "toolu_01ABC123Read"
+}

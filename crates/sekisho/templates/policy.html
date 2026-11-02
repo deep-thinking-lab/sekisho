@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Policy | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/">Inbox</a>
+    <a href="/audit">Audit</a>
+    <a href="/agents">Agents</a>
+    <a href="/grants">Grants</a>
+    <a href="/policy" aria-current="page">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="policy-heading">
+  <div class="page-heading">
+    <div>
+      <h1 id="policy-heading">Policy</h1>
+      <p class="muted">Read only</p>
+    </div>
+  </div>
+  <dl class="detail-grid">
+    <dt>File</dt>
+    <dd><code>{{ path }}</code></dd>
+    <dt>SHA-256</dt>
+    <dd><code class="digest">{{ sha256 }}</code></dd>
+    <dt>Load time</dt>
+    <dd>{{ loaded_at }}</dd>
+  </dl>
+  <pre>{{ text|safe }}</pre>
+</section>
+{% endblock %}

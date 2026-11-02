@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Grants | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/">Inbox</a>
+    <a href="/audit">Audit</a>
+    <a href="/agents">Agents</a>
+    <a href="/grants" aria-current="page">Grants</a>
+    <a href="/policy">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="grants-heading">
+  <div class="page-heading">
+    <div>
+      <h1 id="grants-heading">Grants</h1>
+      <p class="muted">Signed, time-limited allowances issued by an administrator.</p>
+    </div>
+  </div>
+
+  {% if can_admin %}
+    <form class="admin-form" method="post" action="/grants/issue">
+      <h2>Issue grant</h2>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="form-grid">
+        <div class="field">
+          <label for="grant-agent">Agent</label>
+          <input id="grant-agent" name="agent_id" required>
+        </div>
+        <div class="field">
+          <label for="grant-tool">Tool</label>
+          <input id="grant-tool" name="tool" required>
+        </div>
+        <div class="field wide">
+          <label for="grant-target">Target glob</label>
+          <input id="grant-target" name="target_glob" required>
+        </div>
+        <div class="field wide">
+          <label for="grant-params">Params JSON</label>
+          <input id="grant-params" name="params" value="{}" required>
+        </div>
+        <div class="field">
+          <label for="grant-expiry">Expiry</label>
+          <input id="grant-expiry" name="expires_in" value="2h" required>
+        </div>
+        <div class="field">
+          <label for="grant-uses">Max uses</label>
+          <input id="grant-uses" name="max_uses" inputmode="numeric">
+        </div>
+      </div>
+      <button class="approve" type="submit">Issue grant</button>
+    </form>
+  {% endif %}
+
+  {% if rows.is_empty() %}
+    <p class="empty">No grants exist yet.</p>
+  {% else %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Grant</th>
+            <th scope="col">Scope</th>
+            <th scope="col">Uses</th>
+            <th scope="col">Expiry</th>
+            <th scope="col">Status</th>
+            {% if can_admin %}
+              <th scope="col">Action</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td>
+                <code>{{ row.id }}</code>
+                <span class="row-key">{{ row.agent }}</span>
+              </td>
+              <td>
+                <strong>{{ row.tool }}</strong>
+                <span class="row-value">{{ row.target_glob }}</span>
+                <code class="subject">{{ row.params }}</code>
+              </td>
+              <td class="nowrap">{{ row.uses }}</td>
+              <td class="nowrap">{{ row.expires_at }} UTC</td>
+              <td><span class="status {{ row.status }}">{{ row.status }}</span></td>
+              {% if can_admin %}
+                <td>
+                  {% if row.status == "active" || row.status == "pending" %}
+                    <form class="inline-form" method="post" action="/grants/{{ row.id }}/revoke">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button class="deny" type="submit">Revoke</button>
+                    </form>
+                  {% endif %}
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

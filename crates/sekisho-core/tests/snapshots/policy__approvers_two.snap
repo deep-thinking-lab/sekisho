@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("two approvers"), field `approvers`: approvers must be 1 in v0.1

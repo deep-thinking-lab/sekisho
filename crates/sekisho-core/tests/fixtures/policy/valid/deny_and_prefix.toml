@@ -1,0 +1,13 @@
+version = 1
+
+[[rule]]
+name = "deny force pushes"
+tool = "git.push"
+params = { force = true }
+decision = "deny"
+
+[[rule]]
+name = "all github MCP reads"
+tool_prefix = "mcp:github/"
+decision = "allow"
+budget = { max = 100, per = "30d" }

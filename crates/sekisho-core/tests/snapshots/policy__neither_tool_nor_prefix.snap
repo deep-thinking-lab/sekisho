@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("no tool matcher"), field `tool`: exactly one of `tool` or `tool_prefix` is required

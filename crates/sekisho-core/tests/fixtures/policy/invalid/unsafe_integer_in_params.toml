@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "unsafe integer"
+tool = "git.push"
+params = { amount = 9007199254740992 }
+decision = "allow"

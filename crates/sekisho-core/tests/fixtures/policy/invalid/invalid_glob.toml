@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "unclosed class"
+tool = "git.push"
+target = "github.com/acme/[abc"
+decision = "allow"

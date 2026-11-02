@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("maybe is not a decision"), field `decision`: invalid decision "maybe": expected "allow", "ask" or "deny"

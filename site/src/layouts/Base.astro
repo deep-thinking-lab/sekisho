@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/pricing/', label: 'Pricing' },
+  { href: '/security/', label: 'Security' },
+];
+const canonical = new URL(path, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Sekisho home">
+        <span class="brand-mark" aria-hidden="true"></span>Sekisho
+      </a>
+      <nav aria-label="Main">
+        <ul>
+          {nav.map((n) => (
+            <li>
+              <a href={n.href} aria-current={path === n.href || path === n.href.replace(/\/$/, '') ? 'page' : undefined}>{n.label}</a>
+            </li>
+          ))}
+          <li><a href="https://github.com/deep-thinking-lab/sekisho" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <p>Sekisho is Apache-2.0 licensed. Developer preview (v0.1).</p>
+      <p>
+        <a href="https://github.com/deep-thinking-lab/sekisho" rel="noopener">GitHub</a>
+        <a href="/security/">Security</a>
+        <a href="mailto:hello@dthink.ai">hello@dthink.ai</a>
+      </p>
+    </footer>
+  </body>
+</html>

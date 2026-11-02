@@ -1,0 +1,8 @@
+/target
+/.dispatch
+site/node_modules/
+site/dist/
+site/.astro/
+
+# Local release builds (scripts/release/local-build.sh output)
+/dist/

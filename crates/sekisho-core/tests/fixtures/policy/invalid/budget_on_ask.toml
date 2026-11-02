@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "pushes to main need a human"
+tool = "git.push"
+decision = "ask"
+budget = { max = 10, per = "1h" }

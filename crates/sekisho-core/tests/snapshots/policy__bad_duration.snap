@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("weekly budget"), field `budget.per`: invalid budget duration "1w": expected <n>s, <n>m, <n>h or <n>d

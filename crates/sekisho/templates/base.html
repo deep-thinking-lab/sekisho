@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sekisho{% endblock %}</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f3f6f4;
+      --surface: #ffffff;
+      --ink: #17211d;
+      --muted: #5d6964;
+      --line: #d7dfdb;
+      --line-strong: #aebbb5;
+      --accent: #0b6b61;
+      --accent-dark: #074f48;
+      --accent-soft: #e3f1ed;
+      --pending: #8a5a00;
+      --pending-soft: #fff4d6;
+      --danger: #a32b20;
+      --danger-soft: #fcebe8;
+      --focus: #1d58a6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 10;
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--surface);
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .site-nav {
+      display: flex;
+      min-height: 4rem;
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .brand {
+      color: var(--ink);
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--ink);
+    }
+
+    .user-label {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .page {
+      width: min(72rem, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 4rem;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.15;
+    }
+
+    h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.15rem;
+    }
+
+    p {
+      margin: 0 0 1rem;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .quiet-link {
+      font-size: 0.92rem;
+    }
+
+    .button-link {
+      display: inline-flex;
+      min-height: 2.7rem;
+      padding: 0.65rem 1rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--surface);
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .button-link:hover {
+      background: var(--accent-dark);
+      color: var(--surface);
+    }
+
+    .checkpoint {
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .checkpoint p {
+      margin-bottom: 0.45rem;
+    }
+
+    .table-wrap {
+      max-width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      min-width: 48rem;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f7f9f8;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    .subject {
+      display: block;
+      max-width: 34rem;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .admin-form {
+      max-width: 58rem;
+      margin: 0 0 1.5rem;
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .field.wide {
+      grid-column: span 2;
+    }
+
+    .secret {
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid #b6d7cf;
+      border-radius: 8px;
+      background: var(--accent-soft);
+    }
+
+    .secret code {
+      display: block;
+      padding: 0.75rem;
+      border: 1px solid #b6d7cf;
+      border-radius: 6px;
+      background: var(--surface);
+      overflow-wrap: anywhere;
+    }
+
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .inline-form {
+      margin: 0;
+    }
+
+    .secondary {
+      border-color: var(--line-strong);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    .secondary:hover {
+      background: var(--background);
+    }
+
+    .approval-list {
+      display: grid;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .approval-row {
+      display: grid;
+      grid-template-columns: minmax(9rem, 0.8fr) minmax(10rem, 1fr) minmax(14rem, 1.7fr) minmax(8rem, 0.8fr) auto;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .approval-row:hover {
+      border-color: var(--line-strong);
+      background: #fbfcfb;
+    }
+
+    .row-key {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .row-value {
+      display: block;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .row-tool {
+      font-weight: 700;
+    }
+
+    .time-left {
+      color: var(--pending);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .empty {
+      margin: 0;
+      padding: 2rem;
+      border: 1px dashed var(--line-strong);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .detail-header {
+      display: grid;
+      gap: 0.35rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-id {
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      justify-self: start;
+      margin-top: 0.4rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .status.pending {
+      background: var(--pending-soft);
+      color: var(--pending);
+    }
+
+    .status.denied,
+    .status.expired,
+    .status.revoked,
+    .status.exhausted {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .flash {
+      margin: 1.25rem 0 0;
+      padding: 0.8rem 1rem;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(9rem, 0.35fr) minmax(0, 1fr);
+      gap: 1rem 1.5rem;
+      margin: 1.75rem 0;
+    }
+
+    .detail-grid dt {
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .detail-grid dd {
+      margin: 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    code,
+    pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .digest {
+      font-size: 0.82rem;
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f7f9f8;
+      font-size: 0.86rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .button-row form {
+      margin: 0;
+    }
+
+    button {
+      min-height: 2.7rem;
+      padding: 0.65rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .approve {
+      background: var(--accent);
+      color: var(--surface);
+    }
+
+    .approve:hover {
+      background: var(--accent-dark);
+    }
+
+    .deny {
+      border-color: #d7aaa3;
+      background: var(--surface);
+      color: var(--danger);
+    }
+
+    .deny:hover {
+      background: var(--danger-soft);
+    }
+
+    .signin-wrap {
+      width: min(27rem, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 4rem 0;
+    }
+
+    .signin-panel {
+      padding: 1.75rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .field {
+      display: grid;
+      gap: 0.35rem;
+      margin-top: 1rem;
+    }
+
+    .field label {
+      font-weight: 650;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 2.75rem;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .signin-panel button {
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+
+    .error {
+      margin-top: 1rem;
+      padding: 0.7rem 0.85rem;
+      border-left: 4px solid var(--danger);
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    @media (max-width: 760px) {
+      .site-nav,
+      .page {
+        width: 100%;
+      }
+
+      .site-nav {
+        padding: 0 1rem;
+      }
+
+      .page {
+        padding: 2rem 1rem 3rem;
+      }
+
+      .page-heading {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .approval-row {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+      }
+
+      .detail-grid dt {
+        margin-top: 0.65rem;
+      }
+
+      .button-row,
+      .button-row form,
+      button {
+        width: 100%;
+      }
+
+      .signin-wrap {
+        padding: 2rem 0;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.wide {
+        grid-column: span 1;
+      }
+
+      .inline-form,
+      .inline-form button {
+        width: auto;
+      }
+
+      .pagination {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="brand" href="/">Sekisho</a>
+      {% block nav %}{% endblock %}
+    </nav>
+  </header>
+  <main id="content" class="page">
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

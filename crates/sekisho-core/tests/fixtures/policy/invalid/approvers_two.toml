@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "two approvers"
+tool = "git.push"
+decision = "ask"
+approvers = 2

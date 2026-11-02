@@ -1,0 +1,6 @@
+version = 1
+
+[[rule]]
+name = "maybe is not a decision"
+tool = "git.push"
+decision = "maybe"

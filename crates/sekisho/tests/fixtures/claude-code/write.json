@@ -1,0 +1,13 @@
+{
+  "session_id": "abc123",
+  "transcript_path": "/home/user/.claude/projects/-home-user-my-project/abc123.jsonl",
+  "cwd": "/home/user/my-project",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/home/user/my-project/src/checkpoint.rs",
+    "content": "pub fn checkpoint() {}\n"
+  },
+  "tool_use_id": "toolu_01ABC123Write"
+}

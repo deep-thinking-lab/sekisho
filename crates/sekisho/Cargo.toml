@@ -1,0 +1,46 @@
+[package]
+name = "sekisho"
+version = "0.1.1"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "sekisho"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+argon2 = "0.5"
+askama = "0.16"
+axum = "0.8"
+base64 = "0.22"
+clap = { version = "4.6", features = ["derive"] }
+flate2 = "1"
+rand_core = { version = "0.6", features = ["getrandom"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "stream", "blocking"] }
+rmcp = { version = "0.8.5", features = ["client", "transport-child-process", "transport-streamable-http-client-reqwest", "transport-streamable-http-server"] }
+rusqlite = { version = "0.37", features = ["bundled"] }
+sekisho-core = { path = "../sekisho-core" }
+serde = { version = "1", features = ["derive"] }
+serde_jcs = "0.2"
+serde_json = "1"
+sha1 = "0.10"
+sha2 = "0.10"
+thiserror = "2"
+time = { version = "0.3", features = ["formatting"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync", "time", "fs"] }
+toml = "1"
+totp-rs = "5"
+tower-http = { version = "0.6", features = ["limit"] }
+tracing = "0.1"
+uuid = "1"
+
+[dev-dependencies]
+insta = { version = "1", features = ["json"] }
+proptest = "1"
+tokio = { version = "1", features = ["test-util"] }
+tracing-subscriber = "0.3"
+
+[lints]
+workspace = true

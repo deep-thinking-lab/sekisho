@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Sign in | Sekisho{% endblock %}
+{% block content %}
+<div class="signin-wrap">
+  <section class="signin-panel" aria-labelledby="signin-heading">
+    <h1 id="signin-heading">Sign in</h1>
+    {% if !error.is_empty() %}
+      <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+    <form method="post" action="/login">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="field">
+        <label for="user_id">User ID</label>
+        <input id="user_id" name="user_id" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <div class="field">
+        <label for="totp">Verification code</label>
+        <input id="totp" name="totp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}">
+      </div>
+      <button class="approve" type="submit">Sign in</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

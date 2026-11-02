@@ -1,0 +1,21 @@
+version = 1
+
+[[rule]]
+name = "agents may push to their own branches"
+tool = "git.push"
+target = "github.com/acme/*:refs/heads/agent/**"   # globset pattern on target
+params = { force = false }                          # exact-match constraints on top-level params
+decision = "allow"
+budget = { max = 50, per = "1h" }                   # counted server side, per agent per rule
+
+[[rule]]
+name = "pushes to main need a human"
+tool = "git.push"
+target = "github.com/acme/*:refs/heads/main"
+decision = "ask"
+approvers = 1                                       # v0.1 supports 1; quorum is v0.2
+
+[[rule]]
+name = "read-only MCP tools"
+tool_prefix = "mcp:github/get_"                     # explicit prefix match, the only non-exact tool match
+decision = "allow"

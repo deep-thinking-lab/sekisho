@@ -1,0 +1,7 @@
+version = 1
+
+[[rule]]
+name = "both tool matchers"
+tool = "git.push"
+tool_prefix = "git."
+decision = "allow"

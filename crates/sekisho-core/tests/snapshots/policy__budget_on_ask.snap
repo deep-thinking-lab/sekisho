@@ -1,0 +1,5 @@
+---
+source: crates/sekisho-core/tests/policy.rs
+expression: error.to_string()
+---
+rule 0 ("pushes to main need a human"), field `budget`: budget is only allowed on allow rules

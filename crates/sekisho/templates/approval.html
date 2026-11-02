@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Approval detail | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/" aria-current="page">Inbox</a>
+    <a href="/audit">Audit</a>
+    <a href="/agents">Agents</a>
+    <a href="/grants">Grants</a>
+    <a href="/policy">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="detail-heading">
+  <div class="detail-header">
+    <h1 id="detail-heading">Approval detail</h1>
+    <span class="detail-id">{{ id }}</span>
+    <span class="status {% if state == "Pending" %}pending{% else if state == "Denied" || state == "Expired" %}denied{% endif %}">{{ state }}</span>
+  </div>
+  {% if !flash.is_empty() %}
+    <p class="flash" role="status">{{ flash }}</p>
+  {% endif %}
+  <dl class="detail-grid">
+    <dt>Agent</dt>
+    <dd>{{ agent }}</dd>
+    <dt>Tool</dt>
+    <dd>{{ tool }}</dd>
+    <dt>Target</dt>
+    <dd>{{ target }}</dd>
+    <dt>Params</dt>
+    <dd><pre>{{ params }}</pre></dd>
+    <dt>Action digest</dt>
+    <dd><code class="digest">{{ digest }}</code></dd>
+    <dt>Rule</dt>
+    <dd>{{ rule }}</dd>
+    <dt>Expiry</dt>
+    <dd>{{ time_left }}</dd>
+  </dl>
+  {% if show_forms %}
+    <div class="button-row" aria-label="Approval actions">
+      <form method="post" action="/approvals/{{ id }}/approve">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="approve" type="submit">Approve action</button>
+      </form>
+      <form method="post" action="/approvals/{{ id }}/deny">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="deny" type="submit">Deny action</button>
+      </form>
+    </div>
+  {% endif %}
+  <p><a href="/">Back to inbox</a></p>
+</section>
+{% endblock %}

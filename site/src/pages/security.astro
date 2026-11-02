@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Security | Sekisho"
+  description="How to report a security issue in Sekisho, and where to read about its security boundaries."
+>
+  <p class="eyebrow">Security</p>
+  <h1>Report a vulnerability</h1>
+  <p class="lede">If you find a security problem in Sekisho, please tell us privately first.</p>
+  <p>Send a report to <a href="mailto:security@sekisho.sh">security@sekisho.sh</a>. This is the address for security reports.</p>
+  <h2>What to include</h2>
+  <ul class="plain">
+    <li>What you found and which version or commit you tested.</li>
+    <li>Steps to reproduce it.</li>
+    <li>What an attacker could do with it.</li>
+  </ul>
+  <h2>What we ask</h2>
+  <ul class="plain">
+    <li>Give us a reasonable time to fix the issue before you share it publicly.</li>
+    <li>Do not access data that is not yours.</li>
+    <li>Do not open a public issue for a vulnerability.</li>
+  </ul>
+  <h2>Security boundaries</h2>
+  <p>
+    Sekisho is a developer preview (v0.1). The
+    <a href="https://github.com/deep-thinking-lab/sekisho/blob/main/docs/security.md" rel="noopener">security guide</a>
+    describes what the preview protects against, what it does not, and how to deploy it safely.
+  </p>
+</Base>

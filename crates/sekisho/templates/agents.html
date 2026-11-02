@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Agents | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/">Inbox</a>
+    <a href="/audit">Audit</a>
+    <a href="/agents" aria-current="page">Agents</a>
+    <a href="/grants">Grants</a>
+    <a href="/policy">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="agents-heading">
+  <div class="page-heading">
+    <div>
+      <h1 id="agents-heading">Agents</h1>
+      <p class="muted">Bearer identities accepted by the check API.</p>
+    </div>
+  </div>
+
+  {% if show_issued %}
+    <section class="secret" aria-labelledby="token-heading">
+      <h2 id="token-heading">Token issued for {{ issued_id }}</h2>
+      <p>Store this token now. It will not be shown again.</p>
+      <code id="agent-token">{{ issued_token }}</code>
+    </section>
+  {% endif %}
+
+  {% if can_admin %}
+    <form class="admin-form" method="post" action="/agents/add">
+      <h2>Add agent</h2>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="field">
+        <label for="agent-id">Agent ID</label>
+        <input id="agent-id" name="agent_id" required pattern="[a-z0-9][a-z0-9._-]{0,63}">
+      </div>
+      <button class="approve" type="submit">Add agent</button>
+    </form>
+  {% endif %}
+
+  {% if rows.is_empty() %}
+    <p class="empty">No agents exist yet.</p>
+  {% else %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Agent ID</th>
+            {% if can_admin %}
+              <th scope="col">Actions</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td><code>{{ row.id }}</code></td>
+              {% if can_admin %}
+                <td>
+                  <div class="inline-actions">
+                    <form class="inline-form" method="post" action="/agents/{{ row.id }}/rotate">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button class="secondary" type="submit">Rotate token</button>
+                    </form>
+                    <form class="inline-form" method="post" action="/agents/{{ row.id }}/remove">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button class="deny" type="submit">Remove</button>
+                    </form>
+                  </div>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

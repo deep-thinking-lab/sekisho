@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Audit log | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/">Inbox</a>
+    <a href="/audit" aria-current="page">Audit</a>
+    <a href="/agents">Agents</a>
+    <a href="/grants">Grants</a>
+    <a href="/policy">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="audit-heading">
+  <div class="page-heading">
+    <div>
+      <h1 id="audit-heading">Audit log</h1>
+      <p class="muted">Newest entries first.</p>
+    </div>
+    <a class="button-link" href="/audit/export" download>Download export</a>
+  </div>
+
+  <section class="checkpoint" aria-labelledby="checkpoint-heading">
+    <h2 id="checkpoint-heading">Latest checkpoint</h2>
+    {% if has_checkpoint %}
+      <p><span class="row-key">Seq {{ checkpoint_seq }}</span> at {{ checkpoint_at }} UTC</p>
+      <code class="digest">{{ checkpoint_hash }}</code>
+    {% else %}
+      <p class="muted">No checkpoint exists yet.</p>
+    {% endif %}
+  </section>
+
+  {% if rows.is_empty() %}
+    <p class="empty">No audit entries exist yet.</p>
+  {% else %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Seq</th>
+            <th scope="col">Kind</th>
+            <th scope="col">Actor</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td><a href="/audit/{{ row.seq }}">Seq {{ row.seq }}</a></td>
+              <td>{{ row.kind }}</td>
+              <td>{{ row.actor }}</td>
+              <td><code class="subject">{{ row.summary }}</code></td>
+              <td class="nowrap">{{ row.at }} UTC</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <nav class="pagination" aria-label="Audit pages">
+      {% if has_previous %}
+        <a href="/audit?page={{ previous }}">Newer entries</a>
+      {% endif %}
+      <span>Page {{ page }}</span>
+      {% if has_next %}
+        <a href="/audit?page={{ next }}">Older entries</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</section>
+{% endblock %}

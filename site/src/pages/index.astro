@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+const gh = 'https://github.com/deep-thinking-lab/sekisho';
+---
+<Base
+  title="Sekisho: let agents act, keep the keys"
+  description="Sekisho is a self-hosted permission layer for AI agents. Every consequential action is allowed, denied or held for a human to approve, with a signed audit trail you can verify offline."
+>
+  <p class="eyebrow">Sekisho · 関所</p>
+  <h1>Let agents act. <span class="accent">Keep the keys.</span></h1>
+  <p class="status">Developer preview (v0.1)</p>
+  <p class="lede">
+    Sekisho is a self-hosted permission layer for AI agents. Agents use a Sekisho token while Sekisho keeps the
+    upstream credentials. Every consequential action is allowed, denied or held for a human to approve.
+    Every state change lands in a signed audit trail that you own and can verify offline.
+  </p>
+  <ul class="facts">
+    <li>Self-hosted. One binary. One SQLite file.</li>
+    <li>A signed audit trail you can verify offline.</li>
+    <li>Slack and webhook notifications, approve from Slack, all in free Community.</li>
+    <li>No Kubernetes, no cloud account, no KVM.</li>
+  </ul>
+  <div class="actions">
+    <a class="btn primary" href={gh} rel="noopener">View on GitHub</a>
+    <a class="btn" href={`${gh}/blob/main/docs/quickstart.md`} rel="noopener">Read the docs</a>
+  </div>
+
+  <h2>Why “sekisho”</h2>
+  <p>
+    A sekisho was a checkpoint on an Edo-period road. Travellers showed a permit before they passed.
+    Sekisho does the same for agents. An agent asks, and the gate decides.
+  </p>
+
+  <h2>How it works</h2>
+  <div class="flow" role="img" aria-label="An agent sends a request to Sekisho. Sekisho allows, denies or holds it for approval, and only then forwards it to the upstream service using credentials it holds.">
+    <div class="node"><strong>Agent</strong><span>Holds a Sekisho token, nothing else</span></div>
+    <div class="link"></div>
+    <div class="node gate"><strong>Sekisho</strong><span>Allow, deny or hold for a human. Signs the record.</span></div>
+    <div class="link"></div>
+    <div class="node"><strong>Upstream</strong><span>Receives the action. Sekisho holds the credential.</span></div>
+  </div>
+  <p class="flow-note">If policy has no matching rule, the action is denied.</p>
+
+  <h2>What it enforces</h2>
+  <div class="columns">
+    <div class="card">
+      <p class="tag">Today</p>
+      <h3>In the v0.1 preview</h3>
+      <ul>
+        <li>The Claude Code <code>PreToolUse</code> hook sends each tool request to <code>sekisho hook claude-code</code>.</li>
+        <li>The git proxy checks every ref update before it forwards a push to the upstream remote.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="tag">Experimental</p>
+      <h3>MCP gateway in v0.1</h3>
+      <ul>
+        <li>The MCP gateway checks every tool call to the MCP servers you declare in config.</li>
+        <li>It is available in this preview as an experimental enforcement point.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Quickstart</h2>
+  <p>
+    Five steps take you to a git push held for approval. Start with the signed release installer.
+  </p>
+  <ol class="steps">
+    <li>
+      <h3>Install Sekisho</h3>
+      <p>You need <code>curl</code>, <code>minisign</code>, <code>tar</code>, and one of <code>sha256sum</code>, <code>shasum</code> or <code>openssl</code>. Download the installer and its signature, verify it with the release key, read it, then run it. Each command runs only if the one before it succeeded, so the installer never runs unless <code>minisign</code> verifies it.</p>
+<pre><code>curl -fsSLO https://get.sekisho.sh/install.sh &&
+  curl -fsSLO https://get.sekisho.sh/install.sh.minisig &&
+  minisign -Vm install.sh -P RWTEHz6TQEPLS839E2TAO3h02KOMdbvpWJVSGYD/gunfc/A67iH/tSOh &&
+  cat install.sh &&
+  sh ./install.sh</code></pre>
+      <p>The installer verifies the release signature and checksum, then installs to <code>/usr/local/bin</code>. Run it as your normal user. It invokes <code>sudo</code> if the destination needs elevated permissions.</p>
+      <p><a href={`${gh}/releases/tag/v0.1.1`} rel="noopener">Release 0.1.1</a> is signed with minisign key ID <code>4BCB4340933E1FC4</code>. The <a href="https://get.sekisho.sh/release-key.txt">release public key</a> is:</p>
+<pre><code>RWTEHz6TQEPLS839E2TAO3h02KOMdbvpWJVSGYD/gunfc/A67iH/tSOh</code></pre>
+    </li>
+    <li>
+      <h3>Start Sekisho</h3>
+<pre><code>sekisho up</code></pre>
+      <p>This creates a private home directory and asks for an admin account.</p>
+    </li>
+    <li>
+      <h3>Add an agent</h3>
+<pre><code>sekisho agent add claude --print-config claude-code</code></pre>
+      <p>It prints the agent token and the Claude Code hook configuration.</p>
+    </li>
+    <li>
+      <h3>Push through the proxy</h3>
+<pre><code>git remote add sekisho http://127.0.0.1:7470/git/github/owner/repo.git
+git push sekisho HEAD:main</code></pre>
+      <p>Policy holds the push for approval.</p>
+    </li>
+    <li>
+      <h3>Approve and repeat</h3>
+      <p>Open <code>http://127.0.0.1:7470/</code>, sign in and approve the request in the inbox. Then repeat the push.</p>
+    </li>
+  </ol>
+  <p>
+    The <a href={`${gh}/blob/main/docs/quickstart.md`} rel="noopener">full quickstart</a> covers the remote,
+    policy, hook, approval and audit setup. You can then run <code>sekisho audit export</code> and
+    <code>sekisho audit verify</code> to check the trail offline.
+  </p>
+
+  <h2>Documentation</h2>
+  <ul class="plain">
+    <li><a href={`${gh}/blob/main/docs/quickstart.md`} rel="noopener">Quickstart</a></li>
+    <li><a href={`${gh}/blob/main/docs/policy.md`} rel="noopener">Policy reference</a></li>
+    <li><a href={`${gh}/blob/main/docs/git-proxy.md`} rel="noopener">Git proxy reference</a></li>
+    <li><a href={`${gh}/blob/main/docs/audit.md`} rel="noopener">Audit trail</a></li>
+    <li><a href={`${gh}/blob/main/docs/security.md`} rel="noopener">Security</a></li>
+  </ul>
+  <p>Sekisho is licensed under the Apache License 2.0. Expect rough edges: the audit format and policy schema may change before v1.</p>
+</Base>

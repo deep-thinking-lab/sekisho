@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Pricing | Sekisho"
+  description="Sekisho Community is free, Apache-2.0 and self-hosted. Team and Enterprise are in early access. Talk to us."
+>
+  <p class="eyebrow">Pricing</p>
+  <h1>Start free. Talk to us when you need more.</h1>
+  <p class="lede">
+    Community is free and fully self-hosted. Team and Enterprise are in early access. We are working out the
+    details with design partners, so there is no checkout and no public price yet.
+  </p>
+
+  <div class="columns">
+    <div class="card">
+      <p class="tag">Available now</p>
+      <h2 style="border:0;margin-top:0;padding-top:0">Community</h2>
+      <p><strong>Free</strong>, Apache-2.0, self-hosted.</p>
+      <ul>
+        <li>Single binary, SQLite, works offline.</li>
+        <li>TOML policy with allow, ask and deny.</li>
+        <li>Web approval inbox. An approval is bound to the exact action and used once.</li>
+        <li>Claude Code hook and git push proxy today. Experimental MCP gateway.</li>
+        <li>Slack and webhook notifications, approve from Slack.</li>
+        <li>Hash-chained, signed audit log with export and offline verify.</li>
+        <li>Community support.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/deep-thinking-lab/sekisho" rel="noopener">Get it on GitHub</a>
+      </div>
+    </div>
+    <div class="card">
+      <p class="tag">Early access</p>
+      <h2 style="border:0;margin-top:0;padding-top:0">Team</h2>
+      <p><strong>Early access, contact us.</strong> Commercial licence.</p>
+      <p>Planned, not in the v0.1 preview:</p>
+      <ul>
+        <li>Policy from git with review.</li>
+        <li>Teams approvals, two-person rules, approver groups.</li>
+        <li>SSO with OIDC and SAML.</li>
+        <li>Evidence packs for audit reviews.</li>
+        <li>Email support, next business day.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn" href="mailto:hello@dthink.ai?subject=Sekisho%20Team">Talk to us</a>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <p class="tag">Early access</p>
+    <h2 style="border:0;margin-top:0;padding-top:0">Enterprise</h2>
+    <p><strong>Early access, contact us.</strong></p>
+    <p>Planned, not in the v0.1 preview:</p>
+    <ul>
+      <li>High availability and an air-gapped install bundle.</li>
+      <li>Multiple teams with separate policies.</li>
+      <li>Approval chains and out-of-hours escalation.</li>
+      <li>Hardware or cloud KMS signing keys.</li>
+      <li>Custom connectors, a named engineer and an SLA.</li>
+    </ul>
+    <div class="actions">
+      <a class="btn" href="mailto:hello@dthink.ai?subject=Sekisho%20Enterprise">Talk to us</a>
+    </div>
+  </div>
+  <p style="margin-top:1.5rem" class="flow-note">Plans and features may change. Write to <a href="mailto:hello@dthink.ai">hello@dthink.ai</a> and we will reply personally.</p>
+</Base>

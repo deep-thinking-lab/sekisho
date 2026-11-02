@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Inbox | Sekisho{% endblock %}
+{% block nav %}
+  <div class="nav-links">
+    <a href="/" aria-current="page">Inbox</a>
+    <a href="/audit">Audit</a>
+    <a href="/agents">Agents</a>
+    <a href="/grants">Grants</a>
+    <a href="/policy">Policy</a>
+  </div>
+  <span class="user-label">{{ user }}</span>
+{% endblock %}
+{% block content %}
+<section id="approval-list" aria-labelledby="approvals-heading"
+  hx-get="/" hx-trigger="every 5s" hx-select="#approval-list" hx-target="#approval-list" hx-swap="outerHTML">
+  <div class="page-heading">
+    <h1 id="approvals-heading">Pending approvals</h1>
+    <a class="quiet-link" href="/">Refresh</a>
+  </div>
+  {% if rows.is_empty() %}
+    <p class="empty">No approvals are waiting.</p>
+  {% else %}
+    <ul class="approval-list">
+      {% for row in rows %}
+        <li>
+          <a class="approval-row" href="/approvals/{{ row.id }}">
+            <span>
+              <span class="row-key">Agent</span>
+              <span class="row-value">{{ row.agent }}</span>
+            </span>
+            <span>
+              <span class="row-key">Tool</span>
+              <span class="row-value row-tool">{{ row.tool }}</span>
+            </span>
+            <span>
+              <span class="row-key">Target</span>
+              <span class="row-value">{{ row.target }}</span>
+            </span>
+            <span>
+              <span class="row-key">Rule</span>
+              <span class="row-value">{{ row.rule }}</span>
+            </span>
+            <span class="time-left">{{ row.time_left }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/htmx.min.js" defer></script>
+{% endblock %}
